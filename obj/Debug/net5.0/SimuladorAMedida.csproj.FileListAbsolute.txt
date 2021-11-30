@@ -1,0 +1,16 @@
+/home/dani/Documents/SIM/SimuladorAMedida/bin/Debug/net5.0/SimuladorAMedida
+/home/dani/Documents/SIM/SimuladorAMedida/bin/Debug/net5.0/SimuladorAMedida.deps.json
+/home/dani/Documents/SIM/SimuladorAMedida/bin/Debug/net5.0/SimuladorAMedida.runtimeconfig.json
+/home/dani/Documents/SIM/SimuladorAMedida/bin/Debug/net5.0/SimuladorAMedida.runtimeconfig.dev.json
+/home/dani/Documents/SIM/SimuladorAMedida/bin/Debug/net5.0/SimuladorAMedida.dll
+/home/dani/Documents/SIM/SimuladorAMedida/bin/Debug/net5.0/ref/SimuladorAMedida.dll
+/home/dani/Documents/SIM/SimuladorAMedida/bin/Debug/net5.0/SimuladorAMedida.pdb
+/home/dani/Documents/SIM/SimuladorAMedida/obj/Debug/net5.0/SimuladorAMedida.csproj.AssemblyReference.cache
+/home/dani/Documents/SIM/SimuladorAMedida/obj/Debug/net5.0/SimuladorAMedida.GeneratedMSBuildEditorConfig.editorconfig
+/home/dani/Documents/SIM/SimuladorAMedida/obj/Debug/net5.0/SimuladorAMedida.AssemblyInfoInputs.cache
+/home/dani/Documents/SIM/SimuladorAMedida/obj/Debug/net5.0/SimuladorAMedida.AssemblyInfo.cs
+/home/dani/Documents/SIM/SimuladorAMedida/obj/Debug/net5.0/SimuladorAMedida.csproj.CoreCompileInputs.cache
+/home/dani/Documents/SIM/SimuladorAMedida/obj/Debug/net5.0/SimuladorAMedida.dll
+/home/dani/Documents/SIM/SimuladorAMedida/obj/Debug/net5.0/ref/SimuladorAMedida.dll
+/home/dani/Documents/SIM/SimuladorAMedida/obj/Debug/net5.0/SimuladorAMedida.pdb
+/home/dani/Documents/SIM/SimuladorAMedida/obj/Debug/net5.0/SimuladorAMedida.genruntimeconfig.cache
