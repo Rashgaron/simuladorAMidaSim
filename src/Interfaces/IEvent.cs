@@ -7,7 +7,5 @@ namespace SimuladorAMedida.src.Interfaces
 {
     public interface IEvent
     {
-        public IEvent Process();
-        
     }
 }

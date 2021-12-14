@@ -6,14 +6,8 @@ using SimuladorAMedida.src.Implementations;
 
 namespace SimuladorAMedida.src.Interfaces
 {
-    public interface ISimulator
+    public interface ISimulator : IElemento
     {
         public void Run();
-        public void SimulationStart();
-        public void SimulationEnd();
-        public void AddEvent(SimuladorAMedida.src.Implementations.Event e);
-        public SimuladorAMedida.src.Implementations.Event FirstEvent();
-        bool CanSimulate();
-        double ActualTime();
     }
 }

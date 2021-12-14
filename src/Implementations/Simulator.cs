@@ -9,86 +9,71 @@ namespace SimuladorAMedida.src.Implementations
 {
     public class Simulator : ISimulator
     {
-        private List<Event> events;
-        double simulationTime;
-        // Source generator;
-        // Queue queue;
-        // Server server;
-        // Sink exit;
-        
+        int tempsSimulacio;
+        int currentTime;
+        int maxTime;
+        List<Event> eventList = new List<Event>();
+        Creator creator;
+        Silla silla;
+        Sink sink;
+
         public Simulator()
         {
-            events = new List<Event>();
-            simulationTime = 0;
-            InitEvents();
-        }
-
-        private void InitEvents()
-        {
-            AddEvent(new Event(0, EventTypes.SimulationStart));
-            AddEvent(new Event(4, EventTypes.NewArrival));
-            AddEvent(new Event(0, EventTypes.SimulationEnd));
-        }
-        public double ActualTime()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddEvent(Event e)
-        {
-            events.Add(e);
-        }
-
-        public bool CanSimulate()
-        {
-            return events.Count > 0;
-        }
-
-        public Event FirstEvent()
-        {
-            return events.First();
-        }
+            Event simulationStart = new Event(this, 0, EventType.SimulationStart);
+            eventList.Add(simulationStart);
+        } 
 
         public void Run()
         {
-            Event e;
+            currentTime = 0;
+            maxTime = 100;
+            Configurar();
+            CrearModel();
 
-            while(CanSimulate())
+            while (currentTime < maxTime)
             {
-                e = FirstEvent();
-                ProcessEvent(e); 
-                simulationTime += e.Time;
-                Console.WriteLine($"on time: {simulationTime}");
-                events.Remove(e);
-            }
-
-        }
-        private void ProcessEvent(Event e)
-        {
-            switch(e.Type)
-            {
-                case EventTypes.SimulationStart:
-                    SimulationStart();
-                    break;
-                case EventTypes.SimulationEnd:
-                    SimulationEnd();
-                    break;
-                default:
-                    e.Process();
-                    break;
+                Event e = eventList.First();
+                eventList.Remove(e);
+                currentTime = e.time;
+                e.@object.TractarEsdeveniment(e);
             }
         }
 
-        public void SimulationEnd()
+        private void Configurar()
         {
-            Console.Write($"Ending the simulation on time ... ");
+            Console.WriteLine("Introdueix el temps màxim de la simulació:");
+
+        }
+
+        private void CrearModel()
+        {
+            creator = new Creator(this, 10);
+            silla = new Silla(this, 20);
+            sink = new Sink(this);
+
+            silla.InitSilla(sink);
+            creator.InitCreator(silla);
+
+        }
+
+        public void TractarEsdeveniment(Event e)
+        {
+            if(e.type == EventType.SimulationStart)
+            {
+                creator.SimulationStart();
+                silla.SimulationStart();
+                sink.SimulationStart();
+            }
+        }
+
+        public void AfegirEsdeveniment(Event e)
+        {
+            eventList.Add(e);
         }
 
         public void SimulationStart()
         {
-            Console.Write($"Starting the simulation ...");
+            throw new NotImplementedException();
         }
-
-        
     }
 }
