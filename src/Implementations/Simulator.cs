@@ -22,6 +22,7 @@ namespace SimuladorAMedida.src.Implementations
         public int PROCESSOR_TIME = 10; 
         public int MAX_OCUP = 4; 
         public int TIME_BETWEEN_ARRIVALS = 2; 
+        public int MAX_SIMULATION_TIME = 1000;
 
         public Simulator()
         {
@@ -32,7 +33,7 @@ namespace SimuladorAMedida.src.Implementations
         public void Run()
         {
             currentTime = 0;
-            maxTime = 100;
+            maxTime = MAX_SIMULATION_TIME;
             Configurar();
             CrearModel();
 
