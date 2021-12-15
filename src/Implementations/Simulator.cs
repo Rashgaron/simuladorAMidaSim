@@ -17,9 +17,15 @@ namespace SimuladorAMedida.src.Implementations
         Silla silla;
         Sink sink;
 
+        public StateType state { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int currentOcup { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int PROCESSOR_TIME = 10; 
+        public int MAX_OCUP = 4; 
+        public int TIME_BETWEEN_ARRIVALS = 2; 
+
         public Simulator()
         {
-            Event simulationStart = new Event(this, 0, EventType.SimulationStart);
+            Event simulationStart = new Event(this, 0, EventType.SimulationStart, null);
             eventList.Add(simulationStart);
         } 
 
@@ -32,28 +38,29 @@ namespace SimuladorAMedida.src.Implementations
 
             while (currentTime < maxTime)
             {
+                eventList.Sort((x, y) => x.time.CompareTo(y.time));
                 Event e = eventList.First();
                 eventList.Remove(e);
                 currentTime = e.time;
                 e.@object.TractarEsdeveniment(e);
             }
+
+            Console.WriteLine($"Entidades eliminadas: {this.sink.entitatsEliminades}");
         }
 
         private void Configurar()
         {
             Console.WriteLine("Introdueix el temps màxim de la simulació:");
-
         }
 
         private void CrearModel()
         {
-            creator = new Creator(this, 10);
-            silla = new Silla(this, 20);
+            creator = new Creator(this, TIME_BETWEEN_ARRIVALS);
+            silla = new Silla(this, PROCESSOR_TIME, MAX_OCUP);
             sink = new Sink(this);
 
             silla.InitSilla(sink);
             creator.InitCreator(silla);
-
         }
 
         public void TractarEsdeveniment(Event e)
@@ -74,6 +81,13 @@ namespace SimuladorAMedida.src.Implementations
         public void SimulationStart()
         {
             throw new NotImplementedException();
+        }
+
+        public int GetTimeOfNextDie()
+        {
+            List<Event> events = eventList.Where(e => e.type == EventType.Muere).ToList();
+            int minTime = events.Min(e => e.time);
+            return minTime;
         }
     }
 }

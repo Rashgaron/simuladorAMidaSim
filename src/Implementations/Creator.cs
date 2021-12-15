@@ -12,6 +12,9 @@ namespace SimuladorAMedida.src.Implementations
 
         public Silla silla;
 
+        StateType IElemento.state { get; set; }
+        public int currentOcup { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
         public Creator(Simulator simulator, int parameter)
         {
             this.simulator = simulator;
@@ -31,14 +34,14 @@ namespace SimuladorAMedida.src.Implementations
 
         public void TractarEsdeveniment(Event e)
         {
-            if(e.type == EventType.NextArribal)
+            if(e.type == EventType.NextArrival)
                 ProcessNextArrival(e);
         }
 
         private void ProperaArribada(int time)
         {
             int tempsEntreArribades = parameter;
-            simulator.AfegirEsdeveniment(new Event(this, time + tempsEntreArribades, EventType.NextArribal));
+            simulator.AfegirEsdeveniment(new Event(this, time + tempsEntreArribades, EventType.NextArrival, null));
         }
 
         private void ProcessNextArrival(Event e)
@@ -47,7 +50,7 @@ namespace SimuladorAMedida.src.Implementations
 
             entitatsCreades++;
 
-            simulator.AfegirEsdeveniment(new Event(silla, e.time, EventType.SillaOcupada));
+            simulator.AfegirEsdeveniment(new Event(silla, e.time, EventType.SentarseEnSilla, null));
         }
     }
 }
