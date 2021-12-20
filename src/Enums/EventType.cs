@@ -4,7 +4,7 @@ namespace SimuladorAMedida.src.Enums
     {
         SimulationStart,
         NextArrival,
-        SentarseEnSilla,
+        LlamarBarbero,
         Muere
     }
 }

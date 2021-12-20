@@ -1,3 +1,4 @@
+using System;
 using SimuladorAMedida.src.Enums;
 using SimuladorAMedida.src.Interfaces;
 
@@ -10,25 +11,27 @@ namespace SimuladorAMedida.src.Implementations
         public Simulator simulator;
         public int parameter;
 
-        public Silla silla;
+        public Barbero barbero;
+        public int ocupacionMaxima;
 
         StateType IElemento.state { get; set; }
-        public int currentOcup { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
+        public int currentOcup {get; set;} 
         public Creator(Simulator simulator, int parameter)
         {
             this.simulator = simulator;
             this.parameter = parameter;
         }
 
-        public void InitCreator(Silla silla)
+        public void InitCreator(Barbero barbero)
         {
-            this.silla = silla;
+            this.barbero = barbero;
         }
 
         public void SimulationStart()
         {
             entitatsCreades = 0;
+            currentOcup = 0;
+            ocupacionMaxima = 4;
             ProperaArribada(0);
         }
 
@@ -40,17 +43,20 @@ namespace SimuladorAMedida.src.Implementations
 
         private void ProperaArribada(int time)
         {
-            int tempsEntreArribades = parameter;
+            var rand = new Random();
+            int tempsEntreArribades = rand.Next(1, parameter);
             simulator.AfegirEsdeveniment(new Event(this, time + tempsEntreArribades, EventType.NextArrival, null));
         }
 
         private void ProcessNextArrival(Event e)
         {
             ProperaArribada(e.time);
-
             entitatsCreades++;
-
-            simulator.AfegirEsdeveniment(new Event(silla, e.time, EventType.SentarseEnSilla, null));
+            if(currentOcup < ocupacionMaxima)
+            {
+                currentOcup ++;
+                simulator.AfegirEsdeveniment(new Event(barbero, e.time, EventType.LlamarBarbero, this));
+            }
         }
     }
 }

@@ -27,9 +27,7 @@ namespace SimuladorAMedida.src.Implementations
             if(e.type == EventType.Muere)
             {
                 entitatsEliminades ++;
-                e.conexion.state = StateType.Free;
                 e.conexion.currentOcup --;
-                Console.WriteLine($"Muerte del evento {e.time}");
             }
         }
     }
