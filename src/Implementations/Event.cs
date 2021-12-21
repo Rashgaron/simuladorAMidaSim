@@ -11,12 +11,14 @@ namespace SimuladorAMedida.src.Implementations
         public IElemento conexion;
         public int time;
         public IElemento @object;
-        public Event(IElemento elemento, int time, EventType type, IElemento conexion)
+        public IEntidad cliente;
+        public Event(IElemento elemento, int time, EventType type, IElemento conexion, IEntidad cliente)
         {
             this.@object = elemento;
             this.time = time;
             this.type = type;
             this.conexion = conexion;
+            this.cliente = cliente;
         }
         
 

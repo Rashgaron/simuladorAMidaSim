@@ -1,4 +1,5 @@
 using System;
+using SimuladorAMedida.src.Distributions;
 using SimuladorAMedida.src.Enums;
 using SimuladorAMedida.src.Interfaces;
 
@@ -9,22 +10,26 @@ namespace SimuladorAMedida.src.Implementations
         public int entitatsCreades;
         public StateType state = StateType.Service;
         public Simulator simulator;
-        public int parameter;
+        public int maxTimeBetweenArrivals;
 
         public Barbero barbero;
         public int ocupacionMaxima;
 
         StateType IElemento.state { get; set; }
         public int currentOcup {get; set;} 
-        public Creator(Simulator simulator, int parameter)
+        public int noHaPodidoEntrar;
+        public IDistribution distribution;  
+        public Creator(Simulator simulator, int timeBetweenArrivals)
         {
             this.simulator = simulator;
-            this.parameter = parameter;
+            this.maxTimeBetweenArrivals = timeBetweenArrivals;
         }
 
         public void InitCreator(Barbero barbero)
         {
             this.barbero = barbero;
+            this.distribution = new Exponential();
+            this.distribution.Init(1, this.maxTimeBetweenArrivals); 
         }
 
         public void SimulationStart()
@@ -32,6 +37,7 @@ namespace SimuladorAMedida.src.Implementations
             entitatsCreades = 0;
             currentOcup = 0;
             ocupacionMaxima = 4;
+            noHaPodidoEntrar = 0;
             ProperaArribada(0);
         }
 
@@ -43,20 +49,23 @@ namespace SimuladorAMedida.src.Implementations
 
         private void ProperaArribada(int time)
         {
-            var rand = new Random();
-            int tempsEntreArribades = rand.Next(1, parameter);
-            simulator.AfegirEsdeveniment(new Event(this, time + tempsEntreArribades, EventType.NextArrival, null));
+            int tempsEntreArribades = Convert.ToInt32(this.distribution.NextData()); 
+            simulator.AfegirEsdeveniment(new Event(this, time + tempsEntreArribades, EventType.NextArrival, null, new Cliente(entitatsCreades, time)));
         }
 
         private void ProcessNextArrival(Event e)
         {
-            ProperaArribada(e.time);
             entitatsCreades++;
             if(currentOcup < ocupacionMaxima)
             {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine($"El cliente con id {e.cliente.Id} ha entrado en la peluquería en {e.time}");
                 currentOcup ++;
-                simulator.AfegirEsdeveniment(new Event(barbero, e.time, EventType.LlamarBarbero, this));
+                simulator.AfegirEsdeveniment(new Event(barbero, e.time, EventType.LlamarBarbero, this, e.cliente));
+            }else{
+                noHaPodidoEntrar ++;
             }
+            ProperaArribada(e.time);
         }
     }
 }

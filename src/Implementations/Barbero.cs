@@ -15,6 +15,7 @@ namespace SimuladorAMedida.src.Implementations
         public StateType state { get; set; }
         public int currentOcup { get; set; }
         public List<List<int>> horario;
+        public int genteAburrida;
 
         public Barbero(Simulator simulator, int tiempoCorte, List<List<int>> horario)
         {
@@ -31,18 +32,30 @@ namespace SimuladorAMedida.src.Implementations
             this.state = StateType.Free;
             entidadesProcesadas = 0;
             currentOcup = 0;
+            genteAburrida = 0;
         }
 
         public void TractarEsdeveniment(Event e)
         {
             if(e.type == EventType.LlamarBarbero)
             {
-                if(BarberoDisponible(e))
-                    ProcessCortarPelo(e);
-                else 
-                    ProcessBarberosOcupados(e);
+                // Si el cliente se cansa de esperar
+                if(e.time - e.cliente.Created_at >= 50)
+                {
+                    e.conexion.currentOcup --;
+                    genteAburrida ++;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"El cliente con id {e.cliente.Id} ha abandonado la peluquería porque se ha aburrido de esperar en {e.time}");
+                }else
+                {
+                    // Barbero libre
+                    if(BarberoDisponible(e))
+                        ProcessCortarPelo(e);
+                    // Barberos ocupados
+                    else 
+                        ProcessBarberosOcupados(e);
+                }
             }
-            
         }
 
         private bool BarberoDisponible(Event e)
@@ -60,7 +73,7 @@ namespace SimuladorAMedida.src.Implementations
         {
             int time = simulator.GetTimeOfNextDie();
             if(time != -1)
-                simulator.AfegirEsdeveniment(new Event(this, time + 1, e.type, e.conexion));
+                simulator.AfegirEsdeveniment(new Event(this, time + 1, e.type, e.conexion, e.cliente));
         }
 
         private void ProcessCortarPelo(Event e)
@@ -69,7 +82,9 @@ namespace SimuladorAMedida.src.Implementations
             currentOcup ++;
             entidadesProcesadas ++;
             e.conexion.currentOcup --;
-            simulator.AfegirEsdeveniment(new Event(sink, e.time + tempsOcupacio, EventType.Muere, this));
+            simulator.AfegirEsdeveniment(new Event(sink, e.time + tempsOcupacio, EventType.Muere, this, e.cliente));
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine($"El cliente con id {e.cliente.Id} se ha empezado a cortar el pelo en {e.time} y se irá en {e.time + tempsOcupacio}");
         }
     }
 }

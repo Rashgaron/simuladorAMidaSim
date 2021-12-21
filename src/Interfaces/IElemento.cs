@@ -9,6 +9,6 @@ namespace SimuladorAMedida.src.Interfaces
         int currentOcup { get; set; }
 
         void TractarEsdeveniment(Event e);
-         void SimulationStart();
+        void SimulationStart();
     }
 }
