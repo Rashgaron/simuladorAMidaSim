@@ -8,6 +8,10 @@ namespace SimuladorAMedida.src.Distributions
         private Random r;
         private double minValue;
         private double maxValue;
+        public Exponential(double minValue, double maxValue, int seed = 0)
+        {
+            Init(minValue, maxValue, seed);
+        }
         public void Init(double minValue, double maxValue, int seed = 0)
         {
             r = new Random(seed);

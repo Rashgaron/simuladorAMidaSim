@@ -25,10 +25,10 @@ namespace SimuladorAMedida.src.Implementations
             this.maxTimeBetweenArrivals = timeBetweenArrivals;
         }
 
-        public void InitCreator(Barbero barbero)
+        public void InitCreator(Barbero barbero, IDistribution distribution)
         {
             this.barbero = barbero;
-            this.distribution = new Exponential();
+            this.distribution = distribution;
             this.distribution.Init(1, this.maxTimeBetweenArrivals); 
         }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SimuladorAMedida.src.Distributions;
 using SimuladorAMedida.src.Enums;
 using SimuladorAMedida.src.Interfaces;
 
@@ -152,7 +153,7 @@ namespace SimuladorAMedida.src.Implementations
             barbero = new Barbero(this, tiempoDeCorte, horario);
             sink = new Sink(this);
             barbero.InitBarbero(sink);
-            creator.InitCreator(barbero);
+            creator.InitCreator(barbero, new Exponential(1, this.maxTimeBetweenArrivals));
         }
 #endregion
 #region ISimulator
